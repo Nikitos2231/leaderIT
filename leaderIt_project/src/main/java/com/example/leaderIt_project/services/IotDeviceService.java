@@ -31,14 +31,18 @@ public class IotDeviceService {
 
     public List<IotDeviceDTO> getAllDevices() {
         List<IotDeviceDTO> list = iotDeviceRepository.getAll().stream().map(this::convertToIotDeviceDto).collect(Collectors.toList());
-        list.forEach(d -> d.setSecreteKey(keyWorker.decryptKey(d.getSecreteKey())));
+//        list.forEach(d -> d.setSecreteKey(keyWorker.decryptKey(d.getSecreteKey())));
         return list;
     }
 
     public IotDeviceDTO getById(int id) {
         IotDeviceDTO iotDevice = convertToIotDeviceDto(iotDeviceRepository.getById(id));
-        iotDevice.setSecreteKey(keyWorker.decryptKey(iotDevice.getSecreteKey()));
+//        iotDevice.setSecreteKey(keyWorker.decryptKey(iotDevice.getSecreteKey()));
         return iotDevice;
+    }
+
+    public IotDevice getIotDeviceBySerialNumber(String serialNumber) {
+        return iotDeviceRepository.getIotDeviceBySerialNumber(serialNumber);
     }
 
     public String saveDevice(IotDeviceDTO iotDeviceDTO) {

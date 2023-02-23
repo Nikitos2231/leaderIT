@@ -1,11 +1,15 @@
 package com.example.leaderIt_project.models;
 
+import com.example.leaderIt_project.converters.IotDeviceSerialNumberConverter;
+import com.example.leaderIt_project.converters.IotDeviceTypeConverter;
+import com.example.leaderIt_project.enums.IotDeviceTypeEnum;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "iot_device")
+
 public class IotDevice {
 
     @Id
@@ -14,12 +18,14 @@ public class IotDevice {
     private int id;
 
     @Column(name = "serial_number")
-    private long serialNumber;
+    @Convert(converter = IotDeviceSerialNumberConverter.class)
+    private String serialNumber;
 
     @Column(name = "device_name")
     private String deviceName;
 
     @Column(name = "device_type")
+    @Convert(converter = IotDeviceTypeConverter.class)
     private String deviceType;
 
     @Column(name = "secrete_key")
@@ -41,11 +47,11 @@ public class IotDevice {
         this.id = id;
     }
 
-    public long getSerialNumber() {
+    public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerialNumber(long serialNumber) {
+    public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 

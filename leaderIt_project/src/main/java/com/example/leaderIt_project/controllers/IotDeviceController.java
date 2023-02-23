@@ -1,8 +1,13 @@
 package com.example.leaderIt_project.controllers;
 
+import com.example.leaderIt_project.custom_exceptions.InvalidParametersInIotDeviceException;
 import com.example.leaderIt_project.dto.IotDeviceDTO;
 import com.example.leaderIt_project.services.IotDeviceService;
+import com.example.leaderIt_project.validators.IotDeviceValidator;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +18,12 @@ public class IotDeviceController {
 
     private final IotDeviceService iotDeviceService;
 
+    private final IotDeviceValidator iotDeviceValidator;
+
     @Autowired
-    public IotDeviceController(IotDeviceService iotDeviceService) {
+    public IotDeviceController(IotDeviceService iotDeviceService, IotDeviceValidator iotDeviceValidator) {
         this.iotDeviceService = iotDeviceService;
+        this.iotDeviceValidator = iotDeviceValidator;
     }
 
     @GetMapping()
@@ -29,7 +37,15 @@ public class IotDeviceController {
     }
 
     @PostMapping()
-    public String saveDevice(@RequestBody IotDeviceDTO iotDeviceDTO) {
+    public String saveDevice(@RequestBody @Valid IotDeviceDTO iotDeviceDTO, BindingResult bindingResult) throws InvalidParametersInIotDeviceException {
+        iotDeviceValidator.validate(iotDeviceDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getDefaultMessage()).append("; ");
+            }
+            throw new InvalidParametersInIotDeviceException(stringBuilder.toString());
+        }
         return iotDeviceService.saveDevice(iotDeviceDTO);
     }
 
