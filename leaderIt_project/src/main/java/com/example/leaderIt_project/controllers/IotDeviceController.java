@@ -29,8 +29,8 @@ public class IotDeviceController {
     }
 
     @PostMapping()
-    public void saveDevice(@RequestBody IotDeviceDTO iotDeviceDTO) {
-        iotDeviceService.saveDevice(iotDeviceDTO);
+    public String saveDevice(@RequestBody IotDeviceDTO iotDeviceDTO) {
+        return iotDeviceService.saveDevice(iotDeviceDTO);
     }
 
     @DeleteMapping("/{id}/delete")
