@@ -5,6 +5,8 @@ import com.example.leaderIt_project.dto.IotDeviceDTO;
 import com.example.leaderIt_project.services.IotDeviceService;
 import com.example.leaderIt_project.validators.IotDeviceValidator;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequestMapping("/devices")
 public class IotDeviceController {
 
+    private static final Logger logger = LogManager.getLogger(IotDeviceController.class);
     private final IotDeviceService iotDeviceService;
 
     private final IotDeviceValidator iotDeviceValidator;
@@ -44,6 +47,7 @@ public class IotDeviceController {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 stringBuilder.append(fieldError.getDefaultMessage()).append("; ");
             }
+            logger.warn("Failed to save new iot device, because: {}", stringBuilder.toString());
             throw new InvalidParametersInIotDeviceException(stringBuilder.toString());
         }
         return iotDeviceService.saveDevice(iotDeviceDTO);

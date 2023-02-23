@@ -3,13 +3,14 @@ package com.example.leaderIt_project.models;
 import com.example.leaderIt_project.converters.IotDeviceSerialNumberConverter;
 import com.example.leaderIt_project.converters.IotDeviceTypeConverter;
 import com.example.leaderIt_project.enums.IotDeviceTypeEnum;
+import com.example.leaderIt_project.listeners.IotDeviceListener;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "iot_device")
-
+@EntityListeners(IotDeviceListener.class)
 public class IotDevice {
 
     @Id
@@ -85,6 +86,18 @@ public class IotDevice {
 
     public void setDateOfCreate(Date dateOfCreate) {
         this.dateOfCreate = dateOfCreate;
+    }
+
+    @Override
+    public String toString() {
+        return "IotDevice{" +
+                "id=" + id +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", deviceName='" + deviceName + '\'' +
+                ", deviceType='" + deviceType + '\'' +
+                ", secreteKey='" + secreteKey + '\'' +
+                ", dateOfCreate=" + dateOfCreate +
+                '}';
     }
 }
 
