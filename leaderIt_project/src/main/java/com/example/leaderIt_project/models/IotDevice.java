@@ -2,16 +2,17 @@ package com.example.leaderIt_project.models;
 
 import com.example.leaderIt_project.converters.IotDeviceSerialNumberConverter;
 import com.example.leaderIt_project.converters.IotDeviceTypeConverter;
-import com.example.leaderIt_project.enums.IotDeviceTypeEnum;
 import com.example.leaderIt_project.listeners.IotDeviceListener;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "iot_device")
 @EntityListeners(IotDeviceListener.class)
-public class IotDevice {
+public class IotDevice implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,8 +37,19 @@ public class IotDevice {
     @Temporal(TemporalType.DATE)
     private Date dateOfCreate = new Date();
 
+    @OneToMany(mappedBy = "iotDevice", fetch = FetchType.EAGER)
+    private List<Occasion> occasions;
+
     public IotDevice() {
 
+    }
+
+    public List<Occasion> getOccasions() {
+        return occasions;
+    }
+
+    public void setOccasions(List<Occasion> occasions) {
+        this.occasions = occasions;
     }
 
     public int getId() {

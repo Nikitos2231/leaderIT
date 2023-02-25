@@ -54,4 +54,10 @@ public class IotDeviceRepository {
         List<IotDevice> iotDevices = query.list();
         return iotDevices.size() == 0 ? null : iotDevices.get(0);
     }
+
+    @Transactional(readOnly = true)
+    public IotDevice getOneById(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(IotDevice.class, id);
+    }
 }

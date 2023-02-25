@@ -1,9 +1,11 @@
 package com.example.leaderIt_project.services;
 
 import com.example.leaderIt_project.dto.IotDeviceDTO;
+import com.example.leaderIt_project.dto.OccasionDTO;
 import com.example.leaderIt_project.key_workers.GeneratorKeys;
 import com.example.leaderIt_project.key_workers.KeyWorker;
 import com.example.leaderIt_project.models.IotDevice;
+import com.example.leaderIt_project.models.Occasion;
 import com.example.leaderIt_project.repositories.IotDeviceRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,10 @@ public class IotDeviceService {
         iotDeviceRepository.delete(id);
     }
 
+    public IotDevice getOneById(int id) {
+        return iotDeviceRepository.getOneById(id);
+    }
+
     private IotDeviceDTO convertToIotDeviceDto(IotDevice iotDevice) {
         return modelMapper.map(iotDevice, IotDeviceDTO.class);
     }
@@ -67,6 +73,5 @@ public class IotDeviceService {
     private IotDevice convertToIotDevice(IotDeviceDTO iotDeviceDTO) {
         return modelMapper.map(iotDeviceDTO, IotDevice.class);
     }
-
 
 }
