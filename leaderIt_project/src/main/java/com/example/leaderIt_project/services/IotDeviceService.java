@@ -11,6 +11,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -59,7 +65,9 @@ public class IotDeviceService {
         IotDevice iotDevice = convertToIotDevice(iotDeviceDTO);
 
         String generatedKey = generatorKeys.getGeneratedKey();
-        String secreteKey = keyWorker.getEncryptKey(generatedKey);
+        String secreteKey;
+
+        secreteKey = keyWorker.getEncryptKey(generatedKey);
 
         iotDevice.setSecreteKey(secreteKey);
         iotDeviceRepository.save(iotDevice);

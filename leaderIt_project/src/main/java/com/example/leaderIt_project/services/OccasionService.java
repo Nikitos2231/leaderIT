@@ -9,6 +9,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,13 +68,20 @@ public class OccasionService {
         return modelMapper.map(payload, WatchPaylaodDTO.class);
     }
 
-    public void saveOccasion(OccasionDTO occasionDTO) throws InvalidParametersForPayloadException {
-        Occasion occasion = convertToOccasion(occasionDTO);
+    public boolean saveOccasion(OccasionDTO occasionDTO) throws InvalidParametersForPayloadException {
+        Occasion occasion;
+        try {
+            occasion = convertToOccasion(occasionDTO);
+        } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException |
+                 NoSuchAlgorithmException | BadPaddingException | InvalidKeyException e) {
+            return false;
+        }
         occasionRepository.save(occasion);
         activeListService.save(occasion.getIotDevice());
+        return true;
     }
 
-    private Occasion convertToOccasion(OccasionDTO occasionDTO) throws InvalidParametersForPayloadException {
+    private Occasion convertToOccasion(OccasionDTO occasionDTO) throws InvalidParametersForPayloadException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         Occasion occasion = new Occasion();
         occasion.setOccasionType(occasionDTO.getOccasionType());
 
@@ -84,13 +97,13 @@ public class OccasionService {
         return occasion;
     }
 
-    private boolean isSecretKeyValid(PayloadDTO payloadDTO, String secretKeyFromDevice) {
+    private boolean isSecretKeyValid(PayloadDTO payloadDTO, String secretKeyFromDevice) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         String secretKey = keyWorker.decryptKey(secretKeyFromDevice);
         String secreteKeyFromPayload = payloadDTO.getSecretKey();
         return secreteKeyFromPayload.equals(secretKey);
     }
 
-    private Payload convertToPayload(PayloadDTO payloadDTO, int id) throws InvalidParametersForPayloadException {
+    private Payload convertToPayload(PayloadDTO payloadDTO, int id) throws InvalidParametersForPayloadException, InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
 
         IotDevice iotDevice = iotDeviceService.getOneById(id);
         String typeOfDevice = iotDevice.getDeviceType();
@@ -101,7 +114,12 @@ public class OccasionService {
             throw new InvalidParametersForPayloadException("Secret Key cannot be null");
         }
 
-        if (!isSecretKeyValid(payloadDTO, secreteKey)) {
+        try {
+            if (!isSecretKeyValid(payloadDTO, secreteKey)) {
+                throw new InvalidParametersForPayloadException("Secret Key is wrong!");
+            }
+        }
+        catch (Exception e) {
             throw new InvalidParametersForPayloadException("Secret Key is wrong!");
         }
 

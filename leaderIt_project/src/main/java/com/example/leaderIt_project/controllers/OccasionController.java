@@ -52,6 +52,9 @@ public class OccasionController {
             }
             throw new InvalidParametersForOccasionException(listErrors.toString());
         }
-        occasionService.saveOccasion(occasionDTO);
+
+        if (!occasionService.saveOccasion(occasionDTO)) {
+            throw new InvalidParametersForOccasionException("Wrong key!");
+        }
     }
 }

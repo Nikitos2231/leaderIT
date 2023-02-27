@@ -24,52 +24,32 @@ public class KeyWorker {
 
     public String getEncryptKey(String generatedKey) {
         String secreteKey;
-        secreteKey = encryptKey(generatedKey);
+        try {
+            secreteKey = encryptKey(generatedKey);
+        } catch (IllegalBlockSizeException | BadPaddingException | NoSuchPaddingException | NoSuchAlgorithmException |
+                 InvalidAlgorithmParameterException | InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
         return secreteKey;
     }
 
-    public String encryptKey(String input) {
+    public String encryptKey(String input) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException {
         Cipher cipher;
-        try {
-            cipher = Cipher.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            cipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec);
-        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
-            throw new RuntimeException(e);
-        }
+        cipher = Cipher.getInstance(algorithm);
+        cipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec);
         byte[] cipherText;
-        try {
-            cipherText = cipher.doFinal(input.getBytes());
-        } catch (IllegalBlockSizeException | BadPaddingException e) {
-            throw new RuntimeException(e);
-        }
+        cipherText = cipher.doFinal(input.getBytes());
         return Base64.getEncoder()
                 .encodeToString(cipherText);
     }
 
-    public String decryptKey(String cipherText) {
+    public String decryptKey(String cipherText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cipher;
-        try {
-            cipher = Cipher.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            cipher.init(Cipher.DECRYPT_MODE, key, ivParameterSpec);
-        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
-            throw new RuntimeException(e);
-        }
+        cipher = Cipher.getInstance(algorithm);
+        cipher.init(Cipher.DECRYPT_MODE, key, ivParameterSpec);
         byte[] plainText;
-        try {
-            plainText = cipher.doFinal(Base64.getDecoder()
-                    .decode(cipherText));
-        } catch (IllegalBlockSizeException | BadPaddingException e) {
-            throw new RuntimeException(e);
-        }
+        plainText = cipher.doFinal(Base64.getDecoder().decode(cipherText));
         return new String(plainText);
     }
 
