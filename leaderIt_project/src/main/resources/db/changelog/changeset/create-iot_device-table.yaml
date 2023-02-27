@@ -1,0 +1,87 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-iot_device
+      author: Nikita
+      changes:
+        - createTable:
+            tableName: iot_device
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: serial_number
+                  type: int
+              - column:
+                  name: device_name
+                  type: varchar
+              - column:
+                  name: secret_key
+                  type: varchar
+              - column:
+                  name: date_of_create
+                  type: date
+              - column:
+                  name: device_type
+                  type: varchar
+
+        - insert:
+            tableName: iot_device
+            columns:
+              - column:
+                  name: serial_number
+                  value: 1234567890
+              - column:
+                  name: device_name
+                  value: device_1
+              - column:
+                  name: secret_key
+                  value: kbkK/1EBWqMlxeQFvEQikg==
+              - column:
+                  name: date_of_create
+                  value: 2023-02-15
+              - column:
+                  name: device_type
+                  value: 0
+
+        - insert:
+            tableName: iot_device
+            columns:
+              - column:
+                  name: serial_number
+                  value: 1234567899
+              - column:
+                  name: device_name
+                  value: device_2
+              - column:
+                  name: secret_key
+                  value: kbkK/1EBWqMlxeQFEEQikg==
+              - column:
+                  name: date_of_create
+                  value: 2023-02-21
+              - column:
+                  name: device_type
+                  value: 1
+
+        - insert:
+            tableName: iot_device
+            columns:
+              - column:
+                  name: serial_number
+                  value: 1234567895
+              - column:
+                  name: device_name
+                  value: device_3
+              - column:
+                  name: secret_key
+                  value: kbkK/1EBWqMlxeqFEEQikg==
+              - column:
+                  name: date_of_create
+                  value: 2023-02-25
+              - column:
+                  name: device_type
+                  value: 2

@@ -30,7 +30,7 @@ public class IotDevice implements Serializable {
     @Convert(converter = IotDeviceTypeConverter.class)
     private String deviceType;
 
-    @Column(name = "secrete_key")
+    @Column(name = "secret_key")
     private String secreteKey;
 
     @Column(name = "date_of_create")

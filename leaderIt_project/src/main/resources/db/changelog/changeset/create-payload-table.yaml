@@ -1,0 +1,73 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-payload
+      author: Nikita
+      changes:
+        - createTable:
+            tableName: payload
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: occasion_id
+                    referencedTableName: occasion
+                    referencedColumnNames: id
+              - column:
+                  name: secret_key
+                  type: varchar
+
+
+        - insert:
+            tableName: payload
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: secret_key
+                  value: kbkK/1EBWqMlxeQFvEQikg==
+
+        - insert:
+            tableName: payload
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: secret_key
+                  value: kbkK/1EBWqMlxeQFvEQikg==
+
+
+        - insert:
+            tableName: payload
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: secret_key
+                  value: kbkK/1EBWqMlxeQFEEQikg==
+
+        - insert:
+            tableName: payload
+            columns:
+              - column:
+                  name: id
+                  value: 4
+              - column:
+                  name: secret_key
+                  value: kbkK/1EBWqMlxeQFEEQikg==
+
+
+        - insert:
+            tableName: payload
+            columns:
+              - column:
+                  name: id
+                  value: 5
+              - column:
+                  name: secret_key
+                  value: kbkK/1EBWqMlxeqFEEQikg==
