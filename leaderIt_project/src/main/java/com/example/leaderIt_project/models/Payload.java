@@ -16,7 +16,7 @@ public class Payload implements Serializable {
     protected String secretKey;
 
     @MapsId
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id", referencedColumnName = "id")
     protected Occasion occasion;
 

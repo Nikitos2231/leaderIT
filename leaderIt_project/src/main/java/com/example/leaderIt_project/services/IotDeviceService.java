@@ -11,7 +11,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,10 +33,16 @@ public class IotDeviceService {
         this.keyWorker = keyWorker;
     }
 
-    public List<IotDeviceDTO> getAllDevices() {
-        List<IotDeviceDTO> list = iotDeviceRepository.getAll().stream().map(this::convertToIotDeviceDto).collect(Collectors.toList());
-//        list.forEach(d -> d.setSecreteKey(keyWorker.decryptKey(d.getSecreteKey())));
-        return list;
+    public List<IotDeviceDTO> getAllDevices(String type, String dateOfCreate, String page, String count) {
+        if (!isPaginationParametersValid(page, count)) {
+            return new ArrayList<>();
+        }
+        List<IotDevice> devices = iotDeviceRepository.getAllByType(type, dateOfCreate, page, count);
+        return devices == null ? new ArrayList<>() : devices.stream().map(this::convertToIotDeviceDto).collect(Collectors.toList());
+    }
+
+    public boolean isPaginationParametersValid(String pageSize, String currentPage) {
+        return Pattern.matches("^(\\d+)$", pageSize) && Pattern.matches("^(\\d+)$", currentPage) && Integer.parseInt(pageSize) > 0;
     }
 
     public IotDeviceDTO getById(int id) {
@@ -74,4 +82,8 @@ public class IotDeviceService {
         return modelMapper.map(iotDeviceDTO, IotDevice.class);
     }
 
+    public IotDeviceDTO getBySerialNumber(String serialNumber) {
+        IotDevice iotDevice = iotDeviceRepository.getIotDeviceBySerialNumber(serialNumber);
+        return iotDevice == null ? null : modelMapper.map(iotDevice, IotDeviceDTO.class);
+    }
 }

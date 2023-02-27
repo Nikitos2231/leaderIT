@@ -3,6 +3,7 @@ package com.example.leaderIt_project.controllers;
 import com.example.leaderIt_project.custom_exceptions.InvalidParametersForOccasionException;
 import com.example.leaderIt_project.custom_exceptions.InvalidParametersForPayloadException;
 import com.example.leaderIt_project.dto.OccasionDTO;
+import com.example.leaderIt_project.services.ActiveDeviceService;
 import com.example.leaderIt_project.services.OccasionService;
 import com.example.leaderIt_project.validators.OccasionValidator;
 import jakarta.validation.Valid;
@@ -20,10 +21,13 @@ public class OccasionController {
     private final OccasionService occasionService;
     private final OccasionValidator occasionValidator;
 
+    private final ActiveDeviceService activeListService;
+
     @Autowired
-    public OccasionController(OccasionService occasionService, OccasionValidator occasionValidator) {
+    public OccasionController(OccasionService occasionService, OccasionValidator occasionValidator, ActiveDeviceService activeListService) {
         this.occasionService = occasionService;
         this.occasionValidator = occasionValidator;
+        this.activeListService = activeListService;
     }
 
     @GetMapping()

@@ -10,7 +10,6 @@ import java.util.List;
 
 public class IotDeviceDTO {
 
-//    @NotEmpty(message = "serial number shouldn't be empty")
     @NotNull(message = "serial number shouldn't be null")
     @CheckSerialNumber(message = "serial number should have size = 10, and only consist of figures")
     private String serialNumber;

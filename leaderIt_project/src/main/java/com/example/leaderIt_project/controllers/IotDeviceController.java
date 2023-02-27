@@ -2,7 +2,9 @@ package com.example.leaderIt_project.controllers;
 
 import com.example.leaderIt_project.custom_exceptions.InvalidParametersInIotDeviceException;
 import com.example.leaderIt_project.dto.IotDeviceDTO;
+import com.example.leaderIt_project.dto.OccasionDTO;
 import com.example.leaderIt_project.services.IotDeviceService;
+import com.example.leaderIt_project.services.OccasionService;
 import com.example.leaderIt_project.validators.IotDeviceValidator;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
@@ -21,22 +23,36 @@ public class IotDeviceController {
     private static final Logger logger = LogManager.getLogger(IotDeviceController.class);
     private final IotDeviceService iotDeviceService;
 
+    private final OccasionService occasionService;
+
     private final IotDeviceValidator iotDeviceValidator;
 
     @Autowired
-    public IotDeviceController(IotDeviceService iotDeviceService, IotDeviceValidator iotDeviceValidator) {
+    public IotDeviceController(IotDeviceService iotDeviceService, OccasionService occasionService, IotDeviceValidator iotDeviceValidator) {
         this.iotDeviceService = iotDeviceService;
+        this.occasionService = occasionService;
         this.iotDeviceValidator = iotDeviceValidator;
     }
 
     @GetMapping()
-    public List<IotDeviceDTO> getAll() {
-        return iotDeviceService.getAllDevices();
+    public List<IotDeviceDTO> getAll(@RequestParam(value = "type", required = false) String type,
+                                     @RequestParam(value = "date_of_create", required = false) String dateOfCreate,
+                                     @RequestParam(value = "page", required = false, defaultValue = "1") String page,
+                                     @RequestParam(value = "count", required = false, defaultValue = "10") String count) {
+        return iotDeviceService.getAllDevices(type, dateOfCreate, page, count);
     }
 
-    @GetMapping("/{id}")
-    public IotDeviceDTO getOneDevice(@PathVariable("id") int id) {
-        return iotDeviceService.getById(id);
+    @GetMapping("/{serial_number}")
+    public IotDeviceDTO getOneDeviceBySerialNumber(@PathVariable("serial_number") int serialNumber) {
+        return iotDeviceService.getBySerialNumber(String.valueOf(serialNumber));
+    }
+
+    @GetMapping("/{serial_number}/occasions")
+    public List<OccasionDTO> getAllOccasionsBySerialNumber(@PathVariable("serial_number") int serialNumber,
+                                                           @RequestParam(value = "date_of_create", required = false) String dateOfCreate,
+                                                           @RequestParam(value = "page", required = false, defaultValue = "1") String page,
+                                                           @RequestParam(value = "count", required = false, defaultValue = "10") String count) {
+        return occasionService.getOccasionsBySerialNumber(String.valueOf(serialNumber), dateOfCreate, page, count);
     }
 
     @PostMapping()

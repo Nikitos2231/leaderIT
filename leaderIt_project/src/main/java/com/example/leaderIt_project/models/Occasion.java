@@ -3,6 +3,7 @@ package com.example.leaderIt_project.models;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -18,7 +19,7 @@ public class Occasion implements Serializable {
     @PrimaryKeyJoinColumn
     private Payload payload;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "device_id", referencedColumnName = "id")
     private IotDevice iotDevice;
 
@@ -26,7 +27,7 @@ public class Occasion implements Serializable {
     private String occasionType;
 
     @Column(name = "date_of_create")
-    private Date dateOfCreate;
+    private LocalDateTime dateOfCreate = LocalDateTime.now();
 
     public Occasion() {
     }
@@ -63,11 +64,11 @@ public class Occasion implements Serializable {
         this.occasionType = occasionType;
     }
 
-    public Date getDateOfCreate() {
+    public LocalDateTime getDateOfCreate() {
         return dateOfCreate;
     }
 
-    public void setDateOfCreate(Date dateOfCreate) {
+    public void setDateOfCreate(LocalDateTime dateOfCreate) {
         this.dateOfCreate = dateOfCreate;
     }
 }

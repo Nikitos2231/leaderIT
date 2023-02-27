@@ -5,6 +5,7 @@ import com.example.leaderIt_project.models.Occasion;
 import com.example.leaderIt_project.models.Payload;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,5 +47,27 @@ public class OccasionRepository {
         session.update(iotDevice);
         session.persist(occasion);
         session.persist(occasion.getPayload());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Occasion> getAllBySerialNumber(int id, String dateOfCreate, String page, String count) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query<Occasion> query = session.createNativeQuery("SELECT * FROM occasion o where o.device_id = :id and to_char(o.date_of_create, 'YYYY-MM-DD') like :date", Occasion.class);
+
+        query.setParameter("id", id);
+        query.setParameter("date", dateOfCreate == null ? "%" : dateOfCreate);
+
+        int pageSize = Integer.parseInt(count);
+        int currentPage = Integer.parseInt(page);
+
+        query.setFirstResult((currentPage - 1) * pageSize);
+        query.setMaxResults(pageSize);
+
+        List<Occasion> occasions = query.getResultList();
+        if (occasions != null && occasions.size() > 0) {
+            occasions.get(0).getPayload().toString();
+        }
+        return occasions;
     }
 }
