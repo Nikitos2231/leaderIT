@@ -1,7 +1,5 @@
 package com.example.leaderIt_project.dto;
 
-import jakarta.validation.constraints.NotNull;
-
 public class PayloadDTO {
 
     private String secretKey;

@@ -3,7 +3,6 @@ package com.example.leaderIt_project.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "device_active_list")

@@ -15,8 +15,10 @@ import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,18 +56,6 @@ public class OccasionService {
         occasionDTO.setPayloadDTO(modelMapper.map(occasion.getPayload(), PayloadDTO.class));
 
         return occasionDTO;
-    }
-
-    private FridgePayloadDTO convertToFridgePayloadDTO(Payload payload) {
-        return modelMapper.map(payload, FridgePayloadDTO.class);
-    }
-
-    private MobilePayloadDTO convertToMobilePayloadDTO(Payload payload) {
-        return modelMapper.map(payload, MobilePayloadDTO.class);
-    }
-
-    private WatchPaylaodDTO convertToWatchPayloadDTO(Payload payload) {
-        return modelMapper.map(payload, WatchPaylaodDTO.class);
     }
 
     public boolean saveOccasion(OccasionDTO occasionDTO) throws InvalidParametersForPayloadException {
@@ -195,4 +185,43 @@ public class OccasionService {
         return occasionRepository.getAllBySerialNumber(id, dateOfCreate, page, count);
     }
 
+    public Map<String, Integer> getStatistics(String startDate, String endDate) {
+        if (!isDatesValid(startDate, endDate)) {
+            return new TreeMap<>();
+        }
+
+        DateTimeFormatter dateTimeFormatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate start = LocalDate.parse(startDate, dateTimeFormatter1);
+
+        DateTimeFormatter dateTimeFormatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate end = LocalDate.parse(endDate, dateTimeFormatter2);
+
+        Map<String, Integer> statistics = new TreeMap<>();
+
+        List<Occasion> occasions =  occasionRepository.getAll();
+        for (Occasion occasion : occasions) {
+            IotDevice iotDevice = occasion.getIotDevice();
+            if (isDatesSuite(start, end, occasion)) {
+                String typeOfDevice = iotDevice.getDeviceType();
+                if (statistics.containsKey(typeOfDevice)) {
+                    statistics.put(typeOfDevice, statistics.get(typeOfDevice) + 1);
+                }
+                else {
+                    statistics.put(typeOfDevice, 1);
+                }
+            }
+        }
+        return statistics;
+    }
+
+    private boolean isDatesSuite(LocalDate startDate, LocalDate endDate, Occasion occasion) {
+        LocalDate occasionDateOfCreate = occasion.getDateOfCreate().toLocalDate();
+        return (occasionDateOfCreate.isEqual(startDate) || occasionDateOfCreate.isAfter(startDate)) &&
+                (occasionDateOfCreate.isEqual(endDate) || occasionDateOfCreate.isBefore(endDate));
+    }
+
+    private boolean isDatesValid(String startDate, String endDate) {
+        return Pattern.matches("^(\\d{4}-\\d{2}-\\d{2})$", startDate) &&
+                Pattern.matches("^(\\d{4}-\\d{2}-\\d{2})$", endDate);
+    }
 }

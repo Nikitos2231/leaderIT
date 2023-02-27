@@ -1,8 +1,6 @@
 package com.example.leaderIt_project.repositories;
 
 import com.example.leaderIt_project.models.ActiveDevice;
-import com.example.leaderIt_project.models.IotDevice;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -51,8 +47,6 @@ public class ActiveDeviceRepository {
 
     @Transactional
     public List<ActiveDevice> getAll() {
-//        Session session = sessionFactory.getCurrentSession();
-
         return getActiveDevices();
     }
 

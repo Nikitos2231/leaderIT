@@ -4,7 +4,6 @@ import com.example.leaderIt_project.models.ActiveDevice;
 import com.example.leaderIt_project.models.IotDevice;
 import com.example.leaderIt_project.models.Occasion;
 import com.example.leaderIt_project.repositories.ActiveDeviceRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +11,13 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ActiveDeviceService {
-
-    private final ModelMapper modelMapper;
-    private final IotDeviceService iotDeviceService;
     private final ActiveDeviceRepository deviceActiveListRepository;
 
     @Autowired
-    public ActiveDeviceService(ModelMapper modelMapper, IotDeviceService iotDeviceService, ActiveDeviceRepository deviceActiveListRepository) {
-        this.modelMapper = modelMapper;
-        this.iotDeviceService = iotDeviceService;
+    public ActiveDeviceService(ActiveDeviceRepository deviceActiveListRepository) {
         this.deviceActiveListRepository = deviceActiveListRepository;
     }
 

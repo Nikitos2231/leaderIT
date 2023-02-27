@@ -2,11 +2,8 @@ package com.example.leaderIt_project.dto;
 
 import com.example.leaderIt_project.custom_annotations.CheckSerialNumber;
 import com.example.leaderIt_project.custom_annotations.CheckTypeOfDevice;
-import com.example.leaderIt_project.models.Occasion;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.List;
 
 public class IotDeviceDTO {
 

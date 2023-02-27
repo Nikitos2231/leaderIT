@@ -1,22 +1,14 @@
 package com.example.leaderIt_project.services;
 
 import com.example.leaderIt_project.dto.IotDeviceDTO;
-import com.example.leaderIt_project.dto.OccasionDTO;
 import com.example.leaderIt_project.key_workers.GeneratorKeys;
 import com.example.leaderIt_project.key_workers.KeyWorker;
 import com.example.leaderIt_project.models.IotDevice;
-import com.example.leaderIt_project.models.Occasion;
 import com.example.leaderIt_project.repositories.IotDeviceRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -53,7 +45,6 @@ public class IotDeviceService {
 
     public IotDeviceDTO getById(int id) {
         IotDeviceDTO iotDevice = convertToIotDeviceDto(iotDeviceRepository.getById(id));
-//        iotDevice.setSecreteKey(keyWorker.decryptKey(iotDevice.getSecreteKey()));
         return iotDevice;
     }
 

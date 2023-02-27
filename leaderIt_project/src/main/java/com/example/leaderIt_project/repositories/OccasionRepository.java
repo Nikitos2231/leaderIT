@@ -2,7 +2,6 @@ package com.example.leaderIt_project.repositories;
 
 import com.example.leaderIt_project.models.IotDevice;
 import com.example.leaderIt_project.models.Occasion;
-import com.example.leaderIt_project.models.Payload;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

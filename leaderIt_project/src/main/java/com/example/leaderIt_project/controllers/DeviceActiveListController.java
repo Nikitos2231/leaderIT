@@ -15,12 +15,10 @@ import java.util.List;
 public class DeviceActiveListController {
 
     private final ActiveDeviceService deviceActiveListService;
-    private final IotDeviceService iotDeviceService;
 
     @Autowired
-    public DeviceActiveListController(ActiveDeviceService deviceActiveListService, IotDeviceService iotDeviceService) {
+    public DeviceActiveListController(ActiveDeviceService deviceActiveListService) {
         this.deviceActiveListService = deviceActiveListService;
-        this.iotDeviceService = iotDeviceService;
     }
 
     @GetMapping()
