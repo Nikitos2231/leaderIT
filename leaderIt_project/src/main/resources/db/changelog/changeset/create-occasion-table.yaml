@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-occasion
+      author: Nikita
+      changes:
+        - createTable:
+            tableName: occasion
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: device_id
+                  type: int
+                  constraints:
+                    foreignKeyName: device_id
+                    referencedTableName: iot_device
+                    referencedColumnNames: id
+              - column:
+                  name: occasion_type
+                  type: varchar
+              - column:
+                  name: date_of_create
+                  type: date
+
+        - insert:
+            tableName: occasion
+            columns:
+              - column:
+                  name: device_id
+                  value: 1
+              - column:
+                  name: occasion_type
+                  value: Count calls on the birthday
+              - column:
+                  name: date_of_create
+                  value: 2023-02-16
+
+        - insert:
+            tableName: occasion
+            columns:
+              - column:
+                  name: device_id
+                  value: 1
+              - column:
+                  name: occasion_type
+                  value: Count calls on the Sunday
+              - column:
+                  name: date_of_create
+                  value: 2023-02-17
+
+        - insert:
+            tableName: occasion
+            columns:
+              - column:
+                  name: device_id
+                  value: 2
+              - column:
+                  name: occasion_type
+                  value: Energy consumption on Monday
+              - column:
+                  name: date_of_create
+                  value: 2023-02-22
+
+        - insert:
+            tableName: occasion
+            columns:
+              - column:
+                  name: device_id
+                  value: 2
+              - column:
+                  name: occasion_type
+                  value: Energy consumption on Thursday
+              - column:
+                  name: date_of_create
+                  value: 2023-02-23
+
+        - insert:
+            tableName: occasion
+            columns:
+              - column:
+                  name: device_id
+                  value: 3
+              - column:
+                  name: occasion_type
+                  value: Count steps on the train day
+              - column:
+                  name: date_of_create
+                  value: 2023-02-26

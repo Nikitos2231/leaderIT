@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-iot_device-table.yaml
+  - include:
+      file: db/changelog/changeset/create-occasion-table.yaml
+  - include:
+      file: db/changelog/changeset/create-payload-table.yaml
+  - include:
+      file: db/changelog/changeset/create-mobile_payload-table.yaml
+  - include:
+      file: db/changelog/changeset/create-watch_payload-table.yaml
+  - include:
+      file: db/changelog/changeset/create-fridge_payload-table.yaml
+  - include:
+      file: db/changelog/changeset/create-device_active_list-table.yaml

@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-watch_payload
+      author: Nikita
+      changes:
+        - createTable:
+            tableName: watch_payload
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: payload_id
+                    referencedTableName: payload
+                    referencedColumnNames: id
+              - column:
+                  name: count_steps_in_day
+                  type: int
+
+        - insert:
+            tableName: watch_payload
+            columns:
+              - column:
+                  name: id
+                  value: 5
+              - column:
+                  name: count_steps_in_day
+                  value: 10000

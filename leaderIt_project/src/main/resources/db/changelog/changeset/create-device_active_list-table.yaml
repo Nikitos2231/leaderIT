@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-device_active_list
+      author: Nikita
+      changes:
+        - createTable:
+            tableName: device_active_list
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: false
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: date_first_active
+                  type: timestamp
+              - column:
+                  name: date_last_active
+                  type: timestamp
