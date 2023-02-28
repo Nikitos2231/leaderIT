@@ -69,9 +69,4 @@ public class IotDeviceController {
         return iotDeviceService.saveDevice(iotDeviceDTO);
     }
 
-    @DeleteMapping("/{id}/delete")
-    public void deleteDevice(@PathVariable("id") int id) {
-        iotDeviceService.deleteDevice(id);
-    }
-
 }

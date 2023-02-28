@@ -65,10 +65,6 @@ public class IotDeviceService {
         return generatedKey;
     }
 
-    public void deleteDevice(int id) {
-        iotDeviceRepository.delete(id);
-    }
-
     public IotDevice getOneById(int id) {
         return iotDeviceRepository.getOneById(id);
     }
