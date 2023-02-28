@@ -1,5 +1,6 @@
 package com.example.leaderIt_project.util;
 
+import com.example.leaderIt_project.custom_exceptions.DeviceNotFoundException;
 import com.example.leaderIt_project.custom_exceptions.InvalidParametersForOccasionException;
 import com.example.leaderIt_project.custom_exceptions.InvalidParametersForPayloadException;
 import com.example.leaderIt_project.custom_exceptions.InvalidParametersInIotDeviceException;
@@ -28,6 +29,12 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(InvalidParametersForOccasionException.class)
     private ResponseEntity createErrorForOccasion(InvalidParametersForOccasionException e) {
+        IotDeviceResponse sensorErrorResponse = new IotDeviceResponse(new Date(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseEntity<>(sensorErrorResponse, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(DeviceNotFoundException.class)
+    private ResponseEntity iotDeviceNotFound(DeviceNotFoundException e) {
         IotDeviceResponse sensorErrorResponse = new IotDeviceResponse(new Date(), e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseEntity<>(sensorErrorResponse, HttpStatus.BAD_REQUEST));
     }

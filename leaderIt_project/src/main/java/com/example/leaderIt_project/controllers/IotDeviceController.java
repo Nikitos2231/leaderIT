@@ -1,5 +1,6 @@
 package com.example.leaderIt_project.controllers;
 
+import com.example.leaderIt_project.custom_exceptions.DeviceNotFoundException;
 import com.example.leaderIt_project.custom_exceptions.InvalidParametersInIotDeviceException;
 import com.example.leaderIt_project.dto.IotDeviceDTO;
 import com.example.leaderIt_project.dto.OccasionDTO;
@@ -43,8 +44,12 @@ public class IotDeviceController {
     }
 
     @GetMapping("/{serial_number}")
-    public IotDeviceDTO getOneDeviceBySerialNumber(@PathVariable("serial_number") int serialNumber) {
-        return iotDeviceService.getBySerialNumber(String.valueOf(serialNumber));
+    public IotDeviceDTO getOneDeviceBySerialNumber(@PathVariable("serial_number") int serialNumber) throws DeviceNotFoundException {
+        IotDeviceDTO iotDeviceDTO = iotDeviceService.getBySerialNumber(String.valueOf(serialNumber));
+        if (iotDeviceDTO == null) {
+            throw new DeviceNotFoundException("Device with serial number = " + serialNumber + " not found");
+        }
+        return iotDeviceDTO;
     }
 
     @GetMapping("/{serial_number}/occasions")

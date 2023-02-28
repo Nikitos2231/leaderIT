@@ -34,6 +34,7 @@ public class OccasionController {
 
     @GetMapping("/{id}")
     public OccasionDTO getOne(@PathVariable("id") int id) {
+
         return occasionService.getOne(id);
     }
 
